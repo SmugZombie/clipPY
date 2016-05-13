@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # clipPY - Clipboard Manager Using Python
 # Ron Egli - github.com/smugzombie
-# Version 0.0.2
+# Version 0.0.3
 # -*- coding: utf-8 -*-
 import pyperclip
 import sys
@@ -19,21 +19,7 @@ clippings = []
 lastClip = ""
 key = ""
  
-def loadClippings():
-	global clipping1, clipping2
-	f=open(clipboardFile)
-	lines=f.readlines()
-	clipping0.setText(pyperclip.paste())
-	try: clipping1.setText(lines[1])
-	except: clipping1.setText("")
-	try: clipping2.setText(lines[2])
-	except: clipping2.setText("")
-	try: clipping3.setText(lines[3])
-        except: clipping3.setText("")
-	try: clipping4.setText(lines[4])
-        except: clipping4.setText("")
-
-def loadClippings2(x):
+def loadClippings(x):
 	global clipping1, clipping2, clipping3, clipping4
 	url = "https://apt-cyg.com/clipboard/?key="+key
 	req = urllib2.Request(url, headers={'User-Agent' : "Magic Browser"})
@@ -48,7 +34,6 @@ def loadClippings2(x):
         output['url'] = url
         try:
                 response = urllib2.urlopen(req, data, timeout = 30)
-#		response = urllib2.urlopen(req, data)
         except urllib2.HTTPError, err:
                 print err.code
 		return
@@ -56,20 +41,22 @@ def loadClippings2(x):
                 print "Timeout"
 		return
 	output = response.read()
-#	print output
 	try:
 		output = json.loads(output)
 	except:
 		print "Cannot read json"
 		return
 
-#	print output[0]
-
 	clipping0.setText(output[0])
 	clipping1.setText(output[1])
         clipping2.setText(output[2])
         clipping3.setText(output[3])
         clipping4.setText(output[4])
+        clipping5.setText(output[5])
+        clipping6.setText(output[6])
+        clipping7.setText(output[7])
+        clipping8.setText(output[8])
+        clipping9.setText(output[9])
 
 def sendMessage(title, message):
 	os.system('notify-send "'+title+'" "'+message+'"')
@@ -90,7 +77,7 @@ def watchClipboard():
 	while x is not True:
 		x = pyperclip.paste() #.replace('\n', ' ').replace('\r', '')
 		if x != lastClip:
-			loadClippings2(x)
+			loadClippings(x)
 			lastClip = x
 		time.sleep(.500)
 
@@ -113,7 +100,7 @@ a = QApplication(sys.argv)
 w = QMainWindow()
  
 # Set window size. 
-w.resize(240, 150)
+w.resize(240, 270)
  
 # Set window title  
 w.setWindowTitle("ClipPY") 
@@ -151,7 +138,27 @@ clipping4 = QLineEdit(w)
 clipping4.move(20, 120)
 clipping4.resize(200,20) 
 
-loadClippings2("")
+clipping5 = QLineEdit(w)
+clipping5.move(20, 145)
+clipping5.resize(200,20) 
+ 
+clipping6 = QLineEdit(w)
+clipping6.move(20, 170)
+clipping6.resize(200,20) 
+
+clipping7 = QLineEdit(w)
+clipping7.move(20, 195)
+clipping7.resize(200,20) 
+
+clipping8 = QLineEdit(w)
+clipping8.move(20, 220)
+clipping8.resize(200,20) 
+
+clipping9 = QLineEdit(w)
+clipping9.move(20, 245)
+clipping9.resize(200,20) 
+
+loadClippings("")
 
 # Show window
 w.show() 
